@@ -1,0 +1,9 @@
+[submodule "Libs/imgui"]
+	path = libs/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "Libs/eigen"]
+	path = libs/eigen
+	url = https://gitlab.com/libeigen/eigen
+[submodule "libs/gl3w"]
+	path = libs/gl3w
+	url = https://github.com/skaslev/gl3w
