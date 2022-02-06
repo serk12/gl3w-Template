@@ -52,7 +52,7 @@ case $COMMAND in
   ;;
   ""|"build")
   cd build
-  make
+  make || false
   ;;
   "clean")
   cd build
@@ -66,6 +66,6 @@ esac
 cd "$parent_path"
 case $COMMAND in
   "run"|""|"build")
-  ./build/Hanbei
+  ./build/code/Hanbei
   ;;
 esac

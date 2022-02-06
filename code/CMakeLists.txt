@@ -1,0 +1,14 @@
+include_directories(${OPENGL_INCLUDE_DIRS})
+include_directories(${GLUT_INCLUDE_DIRS})
+include_directories(${GLM_INCLUDE_DIRS})
+include_directories("${CMAKE_SOURCE_DIR}/libs/gl3w/build/include")
+include_directories("${CMAKE_SOURCE_DIR}/libs/eigen")
+include_directories("${CMAKE_SOURCE_DIR}/libs/imgui")
+
+link_directories(${OPENGL_LIBRARY_DIRS})
+link_directories(${GLUT_LIBRARY_DIRS})
+link_libraries(dl)
+
+aux_source_directory("${CMAKE_SOURCE_DIR}/code/src" SOURCES)
+add_executable(${appName} ${SOURCES} main.cpp)
+target_link_libraries(${appName} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES}  imgui gl3w ${CMAKE_DL_LIBS})
