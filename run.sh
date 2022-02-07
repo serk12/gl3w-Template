@@ -5,6 +5,7 @@
 ################ functions ################
 ###########################################
 function first_build() {
+  git submodule update --init --recursive
   cd libs/gl3w/
   mkdir -p build
   cd build
