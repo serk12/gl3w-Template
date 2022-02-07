@@ -1,11 +1,14 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
+// game object pattern
 class GameObject {
 public:
-  virtual void event(){};
-  virtual void update(int dt){};
-  virtual void draw() const {};
+  // Chain of Responsibility
+  virtual bool Event(char event) { return false; };
+  // exit application
+  virtual bool Update(int dt) { return false; };
+  virtual void Draw() const {};
 };
 
 #endif

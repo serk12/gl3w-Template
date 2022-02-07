@@ -32,6 +32,7 @@ set -a
 set +a
 # parse command
 COMMAND=$1
+PROFILE=Debug
 shift
 # allow patter matching
 shopt -s extglob;
@@ -41,6 +42,9 @@ do
     case $key in
       -f|--force)
       FORCE=True
+      ;;
+      -r|Release)
+      PROFILE=Release
     esac
     shift
 done
@@ -51,15 +55,20 @@ case $COMMAND in
   "first-build")
   first_build
   ;;
-  ""|"build")
+  ""|"build"|"gdb")
+  if [ $FORCE == True ]; then
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=${PROFILE} ..
+    cd ..
+  fi
   cd build
-  make || false
+  make || exit
   ;;
   "clean")
   cd build
   rm -rf ./*
   if [ $FORCE == False ]; then
-    cmake ..
+    cmake -DCMAKE_BUILD_TYPE=${PROFILE} ..
   fi
   ;;
 esac
@@ -68,5 +77,8 @@ cd "$parent_path"
 case $COMMAND in
   "run"|""|"build")
   ./build/code/Hanbei
+  ;;
+  "gdb")
+  gdb ./build/code/Hanbei
   ;;
 esac
