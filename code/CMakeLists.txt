@@ -11,4 +11,4 @@ link_libraries(dl)
 
 aux_source_directory("${CMAKE_SOURCE_DIR}/code/src" SOURCES)
 add_executable(${appName} ${SOURCES} main.cpp)
-target_link_libraries(${appName} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES}  imgui gl3w ${CMAKE_DL_LIBS})
+target_link_libraries(${appName} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} imgui gl3w ${CMAKE_DL_LIBS})
