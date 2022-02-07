@@ -3,8 +3,6 @@
 
 #include "GameObject.h"
 
-enum UIEvent : char { Key, SpecialKey, MouseMove, MouseClick, Resize };
-
 // Interface - addapter pattern Application - Imgui
 class ApplicationInterface : public GameObject {
 public:
@@ -28,11 +26,16 @@ protected:
   int GetMouseX() const { return mMouseX; }
   int GetMouseY() const { return mMouseY; }
   int GetMouseButton() const { return mMouseButton; }
-  int GetMouseStats() const { return mMouseStats; }
+  int GetMouseState() const { return mMouseState; }
   int GetWidth() const { return mWidth; }
   int GetHeight() const { return mHeight; }
   bool GetKeyPressed() const { return mKeyPressed; }
   bool GetSpecialKeyPressed() const { return mSpecialKeyPressed; }
+  const UIData *GetUIData() const {
+    return new UIData(mKey, mSpecialKey, mMouseX, mMouseY, mMouseButton,
+                      mMouseState, mWidth, mHeight, mKeyPressed,
+                      mSpecialKeyPressed);
+  }
 
 private:
   void SetResize(int width_, int height_) {
@@ -47,7 +50,7 @@ private:
 
   void SetMouseButton(int button_, int state_, int x_, int y_) {
     mMouseButton = button_;
-    mMouseStats = state_;
+    mMouseState = state_;
     SetMouseXY(x_, y_);
   }
 
@@ -65,7 +68,7 @@ private:
 
   unsigned char mKey = '\0'; // null char
   int mSpecialKey = -1, mMouseX = -1, mMouseY = -1, mMouseButton = -1,
-      mMouseStats = -1, mWidth = -1, mHeight = -1;
+      mMouseState = -1, mWidth = -1, mHeight = -1;
   bool mKeyPressed = false, mSpecialKeyPressed = false;
 
   friend class ImguiConnect;

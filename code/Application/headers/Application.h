@@ -10,19 +10,19 @@ class Application : public ApplicationInterface {
 public:
   Application();
 
-  bool Event(char event) override;
-  bool Update(int dt) override;
+  bool Event(char event_, const void *data_) override;
+  bool Update(int dt_) override;
 
   void Draw() const override;
   void RenderGui() override;
 
   void Init() override;
-  bool Load(int argc, char **argv) override;
+  bool Load(int argc_, char **argv_) override;
 
 private:
   bool mExit = false;
   Camera mCamera;
-  Scene scene;
+  Scene mScene;
   std::vector<GameObject> mObjects;
 };
 
