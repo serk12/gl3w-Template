@@ -1,7 +1,7 @@
 #ifndef MODEL_HH
 #define MODEL_HH
 
-#include "../../headers/GameObject.h"
+#include "../../Connector/headers/GameObject.h"
 #include <GL/gl3w.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>

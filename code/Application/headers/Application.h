@@ -1,7 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "../../headers/ApplicationInterface.h"
+#include "../../Connector/headers/ApplicationInterface.h"
 #include "Camera.h"
 #include "Model.h"
 #include "Scene.h"

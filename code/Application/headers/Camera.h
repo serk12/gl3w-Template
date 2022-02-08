@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "../../headers/GameObject.h"
+#include "../../Connector/headers/GameObject.h"
 
 #include <glm/glm.hpp>
 
