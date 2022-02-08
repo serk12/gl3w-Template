@@ -113,15 +113,6 @@ void ImguiConnect::ResizeCallback(int width, int height) {
 void ImguiConnect::DrawCallback() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   mApplication->Draw();
-  // Start the Dear ImGui frame
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGLUT_NewFrame();
-  mApplication->RenderGui();
-  // Rendering
-  ImGui::Render();
-  ImGuiIO &io = ImGui::GetIO();
-  glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   glutSwapBuffers();
   glutPostRedisplay();
 }

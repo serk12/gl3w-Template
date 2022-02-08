@@ -3,27 +3,26 @@
 
 #include "../../headers/ApplicationInterface.h"
 #include "Camera.h"
+#include "Model.h"
 #include "Scene.h"
-#include <vector>
+#include <list>
 
 class Application : public ApplicationInterface {
 public:
   Application();
+  void Init() override;
 
   bool Event(char event_, const void *data_) override;
   bool Update(int dt_) override;
 
   void Draw() const override;
-  void RenderGui() override;
 
-  void Init() override;
-  bool Load(int argc_, char **argv_) override;
-
-private:
+protected:
   bool mExit = false;
+
   Camera mCamera;
-  Scene mScene;
-  std::vector<GameObject> mObjects;
+  Scene *mScene;
+  std::list<Model *> mObjects;
 };
 
 #endif

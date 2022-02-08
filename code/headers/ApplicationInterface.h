@@ -16,7 +16,6 @@ public:
   // virtual void ResizeCallback(int width, int height){};
   // virtual DrawCallback() {}; // render()
   // virtual idleCallback(dt) {}; // update(dt)
-  virtual void RenderGui(){};
   virtual void Init(){};
   virtual bool Load(int argc, char **argv) { return false; };
 

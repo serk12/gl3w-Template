@@ -1,46 +1,47 @@
 #ifndef SHADER_GENERATOR_H
 #define SHADER_GENERATOR_H
 
-#include <GL/gl.h>
 #include <GL/gl3w.h>
+#include <string>
+#include <vector>
 
-enum ShaderType { VERTEX_SHADER, FRAGMENT_SHADER };
+class ShaderProgram;
 
 class Shader {
-  ShaderProgram();
+public:
+  Shader() : mId(0), mReady(false) {}
+  virtual void Free() { mReady = false; };
 
-  void init();
-  void addShader(const Shader &shader);
-  void bindFragmentOutput(const string &outputName);
-  GLint bindVertexAttribute(const string &attribName, GLint size,
-                            GLsizei stride, GLvoid *firstPointer);
-  void link();
-  void free();
+  GLuint ProgramId() const { return mId; }
+  bool IsReady() const { return mReady; }
+  const std::string &Log() const { return mErrorLog; }
 
-  void use();
-
-  // Pass uniforms to the associated shaders
-  void setUniform1i(const string &uniformName, int v);
-  void setUniform2f(const string &uniformName, float v0, float v1);
-  void setUniform3f(const string &uniformName, float v0, float v1, float v2);
-  void setUniform4f(const string &uniformName, float v0, float v1, float v2,
-                    float v3);
-
-  void setUniformMatrix3f(const string &uniformName, const glm::mat3 &mat);
-  void setUniformMatrix4f(const string &uniformName, const glm::mat4 &mat);
-
-  bool isLinked();
-  const string &log() const;
-
-private:
-  GLuint programId;
-  bool linked;
-  string errorLog;
+protected:
+  GLuint mId;
+  bool mReady;
+  std::string mErrorLog;
 };
 
 namespace ShaderGenerator {
-Shader initFromSource(const ShaderType type, const string &source);
-Shader initFromFile(const ShaderType type, const string &filename);
+enum ShaderType : GLuint {
+  VERTEX_SHADER = GL_VERTEX_SHADER,
+  FRAGMENT_SHADER = GL_FRAGMENT_SHADER
+};
+
+using ProgramList = std::vector<std::pair<ShaderType, std::string>>;
+
+class ShaderCode : public Shader {
+public:
+  ShaderCode();
+  ~ShaderCode();
+
+  void Free() override;
+  // These methods should be called with an active OpenGL context
+  void InitFromSource(const ShaderType type_, const std::string &source_);
+  bool InitFromFile(const ShaderType type_, const std::string &filename_);
+};
+
+std::vector<ShaderProgram *> InitShaderList(const std::vector<ProgramList> &);
 }; // namespace ShaderGenerator
 
 #endif

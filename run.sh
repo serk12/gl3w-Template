@@ -4,17 +4,17 @@
 ###########################################
 ################ functions ################
 ###########################################
+function install() {
+  sudo apt install -y libgl1-mesa-dev freeglut3-dev libglm-dev
+}
+
 function first_build() {
   git submodule update --init --recursive
   cd libs/gl3w/
   mkdir -p build
   cd build
   cmake ..
-  make
-  cd "$parent_path"
-  cd build
-  cmake ..
-  make
+  make || exit
 }
 
 
@@ -26,15 +26,16 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
 cd "$parent_path"
 # default values
 FORCE=False
+INSTALL=False
+PROFILE=Debug
 # use .env file
 set -a
     [ -f .env ] && . .env
 set +a
 # parse command
 COMMAND=$1
-PROFILE=Debug
 shift
-# allow patter matching
+# allow patter matching (regex)
 shopt -s extglob;
 while [[ $# -gt 0 ]]
 do
@@ -45,40 +46,51 @@ do
       ;;
       -r|Release)
       PROFILE=Release
+      ;;
+      --install)
+      INSTALL=True
+      ;;
     esac
     shift
 done
 
 # process all
-# build
+# pre-build
+cd "$parent_path"
 case $COMMAND in
   "first-build")
-  first_build
-  ;;
-  ""|"build"|"gdb")
-  if [ $FORCE == True ]; then
-    cd build
-    cmake -DCMAKE_BUILD_TYPE=${PROFILE} ..
-    cd ..
+  if [ $INSTALL == True ]; then
+    install
   fi
-  cd build
-  make || exit
+  first_build
   ;;
   "clean")
   cd build
   rm -rf ./*
-  if [ $FORCE == False ]; then
-    cmake -DCMAKE_BUILD_TYPE=${PROFILE} ..
-  fi
   ;;
 esac
+
+# build
+cd "$parent_path"
+case $COMMAND in
+  ""|"build"|"gdb"|"first-build")
+  cd build
+  if [ $FORCE == True ]; then
+    cmake -DCMAKE_BUILD_TYPE=${PROFILE} ..
+  fi
+  make || exit
+  ;;
+esac
+
 #run
 cd "$parent_path"
 case $COMMAND in
-  "run"|""|"build")
-  ./build/code/Hanbei
+  "run"|""|"build"|"first-build")
+  cd "$parent_path"/build/code/
+  ./Hanbei
   ;;
   "gdb")
-  gdb ./build/code/Hanbei
+  cd "$parent_path"/build/code/
+  gdb ./Hanbei
   ;;
 esac

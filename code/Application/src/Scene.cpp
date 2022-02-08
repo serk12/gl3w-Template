@@ -1,13 +1,19 @@
 #include "../headers/Scene.h"
+#include <GL/gl.h>
 #include <backends/imgui_impl_glut.h>
+#include <backends/imgui_impl_opengl3.h>
 #include <imgui.h>
 
-void Scene::InitShaders() {}
-void Scene::DrawGui() {
-  ImGui::Begin("Options", 0, ImGuiWindowFlags_AlwaysAutoResize);
-  ImGui::Text("Render");
-  ImGui::SliderInt("Point size", &mValue, 1, 7);
-  ImGui::End();
+void Scene::Draw() const {
+  // Start the Dear ImGui frame
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGLUT_NewFrame();
+  DrawGui();
+  // Rendering
+  ImGui::Render();
+  ImGuiIO &io = ImGui::GetIO();
+  glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 bool Scene::Event(char event_, const void *data_) {

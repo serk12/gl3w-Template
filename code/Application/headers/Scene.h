@@ -5,12 +5,11 @@
 
 class Scene : public GameObject {
 public:
-  void InitShaders();
-  void DrawGui();
   bool Event(char event_, const void *data_);
+  void Draw() const override;
 
-private:
-  int mValue = 5;
+protected:
+  virtual void DrawGui() const {};
 };
 
 #endif
