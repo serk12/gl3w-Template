@@ -12,7 +12,6 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(GLM REQUIRED)
 
-execute_process(COMMAND ln -s ../shaders)
-
+execute_process(COMMAND ln -s "${CMAKE_SOURCE_DIR}/models")
 add_subdirectory(libs)
 add_subdirectory(code)

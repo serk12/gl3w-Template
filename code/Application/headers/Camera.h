@@ -23,6 +23,7 @@ private:
   void ComputeModelViewMatrix();
   float mAngleX, mAngleY, mDistance, mRangeDistanceCamera[2];
   glm::mat4 mProjection, mModelView;
+  glm::ivec2 mLastMouse = glm::ivec2(-1, -1);
 };
 
 #endif

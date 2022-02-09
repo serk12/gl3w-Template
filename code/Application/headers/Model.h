@@ -4,6 +4,7 @@
 #include "../../Connector/headers/GameObject.h"
 #include <GL/gl3w.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -11,7 +12,7 @@ class ShaderProgram;
 class Model : public GameObject {
 public:
   virtual bool Load(const std::string &filename_);
-  virtual void SendToOpenGL(const ShaderProgram *program_);
+  virtual void SendToOpenGL(const std::shared_ptr<ShaderProgram> program_);
   virtual void Free();
 
   void Draw() const override;

@@ -1,6 +1,11 @@
 #include "../headers/Application.h"
+#include "../headers/Camera.h"
+#include "../headers/Model.h"
+#include "../headers/Scene.h"
+#include "../headers/ShaderProgram.h"
+#include <iostream>
 
-Application::Application() {}
+Application::Application() { mCamera = std::shared_ptr<Camera>(new Camera()); }
 
 bool Application::Event(char event, const void *data_ = nullptr) {
   switch (event) {
@@ -17,11 +22,11 @@ bool Application::Event(char event, const void *data_ = nullptr) {
   const auto data = GetUIData();
   if (mScene->Event(event, data))
     return true;
-  for (auto *object : mObjects) {
+  for (auto object : mObjects) {
     if (object->Event(event))
       return true;
   }
-  if (mCamera.Event(event, data))
+  if (mCamera->Event(event, data))
     return true;
   return false;
 }
@@ -29,23 +34,26 @@ bool Application::Event(char event, const void *data_ = nullptr) {
 bool Application::Update(int dt) {
   mScene->Update(dt);
   for (auto it = mObjects.begin(); it != mObjects.end();) {
-    if (!(*it)->Update(dt)) {
-      delete (*it);
+    if ((*it)->Update(dt)) {
       it = mObjects.erase(it);
       continue;
     }
     ++it;
   }
-  mCamera.Update(dt);
+  mCamera->Update(dt);
   return !mExit;
 }
 
 void Application::Draw() const {
   mScene->Draw();
-  for (auto &object : mObjects) {
-    object->Draw();
+  if (mShaders.size() > 0) {
+    mShaders[0]->Use();
+    mShaders[0]->SetCamera(mCamera);
+    for (auto &object : mObjects) {
+      object->Draw();
+    }
   }
-  mCamera.Draw();
+  mCamera->Draw();
 }
 
-void Application::Init() { mCamera.Init(); }
+void Application::Init() { mCamera->Init(); }

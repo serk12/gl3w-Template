@@ -5,6 +5,7 @@
 
 class Hanbei : public Application {
 public:
+  Hanbei();
   bool Load(int argc_, char **argv_) override;
 };
 

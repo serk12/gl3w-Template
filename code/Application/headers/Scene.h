@@ -6,7 +6,7 @@
 class Scene : public GameObject {
 public:
   bool Event(char event_, const void *data_);
-  void Draw() const override;
+  void Draw() const override final;
 
 protected:
   virtual void DrawGui() const {};

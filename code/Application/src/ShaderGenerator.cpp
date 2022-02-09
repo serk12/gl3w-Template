@@ -44,20 +44,19 @@ bool ShaderCode::InitFromFile(const ShaderType type_,
   return true;
 }
 
-std::vector<ShaderProgram *>
-InitShaderList(const std::vector<ProgramList> &list_) {
-  std::vector<ShaderProgram *> result;
-  for (const auto &programList : list_) {
-    ShaderProgram *program = new ShaderProgram();
+ProgramList InitShaderList(const std::vector<ProgramDataList> &list_) {
+  ProgramList result;
+  for (const auto &programDataList : list_) {
+    auto program = std::shared_ptr<ShaderProgram>(new ShaderProgram());
     result.push_back(program);
     program->Init();
-    for (const auto &programInfo : programList) {
+    for (const auto &data : programDataList) {
       ShaderCode code;
-      code.InitFromFile(programInfo.first, programInfo.second);
+      code.InitFromFile(data.first, data.second);
       if (code.IsReady()) {
         program->AddShader(code.ProgramId());
       } else {
-        std::cout << "Shader error: " << programInfo.second << std::endl;
+        std::cout << "Shader error: " << data.second << std::endl;
         std::cout << code.Log() << std::endl;
       }
       code.Free();

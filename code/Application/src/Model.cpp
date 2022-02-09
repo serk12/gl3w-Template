@@ -1,6 +1,7 @@
 #include "../headers/Model.h"
 #include "../headers/ShaderProgram.h"
 #include <fstream>
+#include <iostream>
 
 bool Model::Load(const std::string &filename_) {
   std::ifstream fin;
@@ -38,15 +39,17 @@ bool Model::Load(const std::string &filename_) {
     fin >> P.x >> P.y >> P.z;
     if (bNormals)
       fin >> N.x >> N.y >> N.z;
+    mTriangles.push_back(mPoints.size());
     mPoints.push_back(P);
     mNormals.push_back(N);
   }
+  std::cout << "Model loaded: " << mPoints.size() << std::endl;
   mColors.resize(mPoints.size(), glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 
   return true;
 }
 
-void Model::SendToOpenGL(const ShaderProgram *program_) {
+void Model::SendToOpenGL(const std::shared_ptr<ShaderProgram> program_) {
   // Send data to OpenGL
   if (!mGLObjsInit) {
     glGenVertexArrays(1, &mVao);

@@ -1,4 +1,7 @@
+#include "../headers/Camera.h"
 #include "../headers/ShaderProgram.h"
+
+#include <glm/gtc/matrix_inverse.hpp>
 
 ShaderProgram::ShaderProgram() : Shader() {}
 ShaderProgram::~ShaderProgram() { Free(); }
@@ -40,6 +43,14 @@ void ShaderProgram::Free() {
   }
 }
 void ShaderProgram::Use() const { glUseProgram(mId); }
+
+void ShaderProgram::SetCamera(const std::shared_ptr<Camera> camera_) const {
+  SetUniformMatrix4f("projection", camera_->GetProjectionMatrix());
+  SetUniformMatrix4f("modelview", camera_->GetModelViewMatrix());
+  SetUniformMatrix3f("normalMatrix", glm::inverseTranspose(glm::mat3(
+                                         camera_->GetModelViewMatrix())));
+  glPointSize(3.0);
+}
 
 void ShaderProgram::SetUniform1i(const std::string &uniformName, int v_) const {
   GLint location = glGetUniformLocation(mId, uniformName.c_str());

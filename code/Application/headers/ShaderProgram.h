@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+class Camera;
+
 class ShaderProgram : public Shader {
 public:
   ShaderProgram();
@@ -20,6 +22,7 @@ public:
   void Link();
   void Free() override;
   void Use() const;
+  virtual void SetCamera(const std::shared_ptr<Camera> camera_) const;
 
   void SetUniform1i(const std::string &uniformName_, int v_) const;
   void SetUniformf(const std::string &uniformName_,

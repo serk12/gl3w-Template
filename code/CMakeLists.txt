@@ -1,3 +1,5 @@
+execute_process(COMMAND ln -s "${CMAKE_SOURCE_DIR}/code/Shaders")
+
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${GLM_INCLUDE_DIRS})
