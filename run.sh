@@ -80,6 +80,9 @@ case $COMMAND in
   fi
   make || exit
   ;;
+  "doxygen")
+  doxygen Doxyfile
+  ;;
 esac
 
 #run
@@ -92,5 +95,8 @@ case $COMMAND in
   "gdb")
   cd "$parent_path"/build/code/
   gdb ./Hanbei
+  ;;
+  "doxygen")
+  firefox ${parent_path}/build/doc/html/index.html
   ;;
 esac
