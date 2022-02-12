@@ -37,10 +37,18 @@ private:
 class Context {
 public:
   Context();
-  static Context &GetActualContext();
+  static Context &GetActualContext() {
+    static Context actual;
+    return actual;
+  }
 
-  void PushEvent(char event_);
-  char PopEvent();
+  void PushEvent(char event_) { mNextEvents.push(event_); }
+
+  char PopEvent() {
+    char next = mNextEvents.front();
+    mNextEvents.pop();
+    return next;
+  }
   bool EventsEmpty() const { return mNextEvents.empty(); }
   UIData &GetUIData() { return mUIData; };
 
