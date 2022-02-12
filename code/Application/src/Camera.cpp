@@ -11,8 +11,8 @@ void Camera::Init(float initDistance_, float initAngleX_, float initAngleY_) {
   mDistance = initDistance_;
   mAngleX = initAngleX_;
   mAngleY = initAngleY_;
-  mRangeDistanceCamera[0] = 1.0f;
-  mRangeDistanceCamera[1] = 3.0f;
+  mRangeDistanceCamera[0] = initDistance_ < 0.1f ? initDistance_ : 0.1f;
+  mRangeDistanceCamera[1] = initDistance_ > 3.0f ? initDistance_ : 3.0f;
   ComputeModelViewMatrix();
 }
 

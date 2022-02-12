@@ -96,7 +96,7 @@ case $COMMAND in
   cd "$parent_path"/build/code/
   gdb ./Hanbei
   ;;
-  "doxygen")
+  "doxygen"|"doc")
   firefox ${parent_path}/build/doc/html/index.html
   ;;
 esac

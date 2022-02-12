@@ -20,19 +20,18 @@ bool Application::Event(char event, const void *data_ = nullptr) {
   }
   // context
   const auto data = GetUIData();
-  if (mScene->Event(event, data))
-    return true;
   for (auto object : mObjects) {
     if (object->Event(event))
       return true;
   }
+  if (mScene->Event(event, data))
+    return true;
   if (mCamera->Event(event, data))
     return true;
   return false;
 }
 
 bool Application::Update(int dt) {
-  mScene->Update(dt);
   for (auto it = mObjects.begin(); it != mObjects.end();) {
     if ((*it)->Update(dt)) {
       it = mObjects.erase(it);
@@ -40,12 +39,12 @@ bool Application::Update(int dt) {
     }
     ++it;
   }
+  mScene->Update(dt);
   mCamera->Update(dt);
   return !mExit;
 }
 
 void Application::Draw() const {
-  mScene->Draw();
   if (mShaders.size() > 0) {
     mShaders[0]->Use();
     mShaders[0]->SetCamera(mCamera);
@@ -53,6 +52,7 @@ void Application::Draw() const {
       object->Draw();
     }
   }
+  mScene->Draw();
   mCamera->Draw();
 }
 

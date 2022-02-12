@@ -1,7 +1,6 @@
 #include "../headers/Model.h"
 #include "../headers/ShaderProgram.h"
 #include <fstream>
-#include <iostream>
 
 bool Model::Load(const std::string &filename_) {
   std::ifstream fin;
@@ -39,11 +38,10 @@ bool Model::Load(const std::string &filename_) {
     fin >> P.x >> P.y >> P.z;
     if (bNormals)
       fin >> N.x >> N.y >> N.z;
-    mTriangles.push_back(mPoints.size());
+    mTriangles.push_back(i);
     mPoints.push_back(P);
     mNormals.push_back(N);
   }
-  std::cout << "Model loaded: " << mPoints.size() << std::endl;
   mColors.resize(mPoints.size(), glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 
   return true;
@@ -82,6 +80,7 @@ void Model::SendToOpenGL(const std::shared_ptr<ShaderProgram> program_) {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                sizeof(unsigned int) * mTriangles.size(), &mTriangles[0],
                GL_STATIC_DRAW);
+  glBindVertexArray(0);
 }
 
 void Model::Draw() const {
@@ -89,7 +88,8 @@ void Model::Draw() const {
   glEnableVertexAttribArray(mPosLocation);
   glEnableVertexAttribArray(mNormalLocation);
   glEnableVertexAttribArray(mColorLocation);
-  glDrawArrays(GL_POINTS, 0, mPoints.size());
+  glDrawElements(GL_TRIANGLES, mTriangles.size(), GL_UNSIGNED_INT, 0);
+  glBindVertexArray(0);
 }
 
 void Model::Free() {

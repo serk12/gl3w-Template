@@ -9,8 +9,16 @@
 #include <vector>
 
 class ShaderProgram;
+
+/*! \class Model
+    \brief Basic triangle mesh class
+
+    Loads a ply, includes normal, color and Ebo buffers and render a triangle
+   mesh
+*/
 class Model : public GameObject {
 public:
+  /*! \fn loads a ply \param filename_ stores the file direction */
   virtual bool Load(const std::string &filename_);
   virtual void SendToOpenGL(const std::shared_ptr<ShaderProgram> program_);
   virtual void Free();

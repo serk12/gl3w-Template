@@ -7,7 +7,7 @@
 
 class Camera : public GameObject {
 public:
-  void Init(float initDistance_ = 2.0f, float initAngleX_ = 0.0f,
+  void Init(float initDistance_ = 0.5f, float initAngleX_ = 0.0f,
             float initAngleY_ = 0.0f);
 
   void ResizeCameraViewport(int width_, int height_);
