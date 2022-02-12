@@ -15,7 +15,7 @@ public:
   Application();
   void Init() override;
 
-  bool Event(char event_, const void *data_) override;
+  bool Event(char event_) override;
   bool Update(int dt_) override;
 
   void Draw() const override;
@@ -27,6 +27,7 @@ protected:
   std::shared_ptr<Scene> mScene;
   std::vector<std::shared_ptr<Model>> mObjects;
   std::vector<std::shared_ptr<ShaderProgram>> mShaders;
+  std::queue<char> mEvents;
 };
 
 #endif

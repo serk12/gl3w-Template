@@ -18,6 +18,7 @@ class ShaderProgram;
 */
 class Model : public GameObject {
 public:
+  Model();
   /*! \fn loads a ply \param filename_ stores the file direction */
   virtual bool Load(const std::string &filename_);
   virtual void SendToOpenGL(const std::shared_ptr<ShaderProgram> program_);

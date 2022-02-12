@@ -1,8 +1,11 @@
 #include "../headers/Scene.h"
+
+#include "../../Connector/headers/Context.h"
 #include <GL/gl.h>
 #include <backends/imgui_impl_glut.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <imgui.h>
+#include <iostream>
 
 void Scene::Draw() const {
   // Start the Dear ImGui frame
@@ -16,43 +19,44 @@ void Scene::Draw() const {
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-bool Scene::Event(char event_, const void *data_) {
-  const auto *dataUI = static_cast<const UIData *>(data_);
+bool Scene::Event(char event_) {
+  auto &UIdata = Context::GetActualContext().GetUIData();
   switch (event_) {
   case UIEvent::Key:
-    if (dataUI->keyPressed) {
-      ImGui_ImplGLUT_KeyboardFunc(dataUI->key, dataUI->mouseX, dataUI->mouseY);
+    if (UIdata.GetKeyPressed()) {
+      ImGui_ImplGLUT_KeyboardFunc(UIdata.GetKey(), UIdata.GetMouseX(),
+                                  UIdata.GetMouseY());
     } else {
-      ImGui_ImplGLUT_KeyboardUpFunc(dataUI->key, dataUI->mouseX,
-                                    dataUI->mouseY);
+      ImGui_ImplGLUT_KeyboardUpFunc(UIdata.GetKey(), UIdata.GetMouseX(),
+                                    UIdata.GetMouseY());
     }
     if (ImGui::GetIO().WantCaptureKeyboard)
       return true;
     break;
   case UIEvent::SpecialKey:
-    if (dataUI->specialKeyPressed) {
-      ImGui_ImplGLUT_SpecialFunc(dataUI->specialKey, dataUI->mouseX,
-                                 dataUI->mouseY);
+    if (UIdata.GetSpecialKeyPressed()) {
+      ImGui_ImplGLUT_SpecialFunc(UIdata.GetSpecialKey(), UIdata.GetMouseX(),
+                                 UIdata.GetMouseY());
     } else {
-      ImGui_ImplGLUT_SpecialUpFunc(dataUI->specialKey, dataUI->mouseX,
-                                   dataUI->mouseY);
+      ImGui_ImplGLUT_SpecialUpFunc(UIdata.GetSpecialKey(), UIdata.GetMouseX(),
+                                   UIdata.GetMouseY());
     }
     if (ImGui::GetIO().WantCaptureKeyboard)
       return true;
     break;
   case UIEvent::MouseMove:
-    ImGui_ImplGLUT_MotionFunc(dataUI->mouseX, dataUI->mouseY);
+    ImGui_ImplGLUT_MotionFunc(UIdata.GetMouseX(), UIdata.GetMouseY());
     if (ImGui::GetIO().WantCaptureMouse)
       return true;
     break;
   case UIEvent::MouseClick:
-    ImGui_ImplGLUT_MouseFunc(dataUI->mouseButton, dataUI->mouseState,
-                             dataUI->mouseX, dataUI->mouseY);
+    ImGui_ImplGLUT_MouseFunc(UIdata.GetMouseButton(), UIdata.GetMouseState(),
+                             UIdata.GetMouseX(), UIdata.GetMouseY());
     if (ImGui::GetIO().WantCaptureMouse)
       return true;
     break;
   case UIEvent::Resize:
-    ImGui_ImplGLUT_ReshapeFunc(dataUI->width, dataUI->height);
+    ImGui_ImplGLUT_ReshapeFunc(UIdata.GetWidth(), UIdata.GetHeight());
     break;
   }
   return false;

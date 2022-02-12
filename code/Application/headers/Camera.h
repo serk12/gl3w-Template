@@ -17,7 +17,7 @@ public:
   glm::mat4 &GetProjectionMatrix() { return mProjection; }
   glm::mat4 &GetModelViewMatrix() { return mModelView; }
 
-  bool Event(char event_, const void *data_);
+  bool Event(char event_) override;
 
 private:
   void ComputeModelViewMatrix();

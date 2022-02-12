@@ -1,9 +1,10 @@
 #include "../headers/Camera.h"
+
+#include "../../Connector/headers/Context.h"
 #define GLM_FORCE_RADIANS
 #include <GL/freeglut.h>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 
 #define PI 3.14159f
 
@@ -44,29 +45,30 @@ void Camera::ComputeModelViewMatrix() {
                            glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-bool Camera::Event(char event_, const void *data_) {
+bool Camera::Event(char event_) {
+  auto UIdata = Context::GetActualContext().GetUIData();
   switch (event_) {
   case UIEvent::Resize: {
-    const auto *data = static_cast<const UIData *>(data_);
-    ResizeCameraViewport(data->width, data->height);
+    ResizeCameraViewport(UIdata.GetWidth(), UIdata.GetHeight());
     break;
   }
   case UIEvent::MouseMove:
   case UIEvent::MouseClick: {
-    const auto *data = static_cast<const UIData *>(data_);
+
     glm::ivec2 aux = mLastMouse;
-    glm::ivec2 diff = glm::ivec2(data->mouseX - aux.x, data->mouseY - aux.y);
-    if (data->mouseState == GLUT_DOWN) {
-      mLastMouse = glm::ivec2(data->mouseX, data->mouseY);
+    glm::ivec2 diff =
+        glm::ivec2(UIdata.GetMouseX() - aux.x, UIdata.GetMouseY() - aux.y);
+    if (UIdata.GetMouseState() == GLUT_DOWN) {
+      mLastMouse = glm::ivec2(UIdata.GetMouseX(), UIdata.GetMouseY());
     } else {
       mLastMouse = glm::ivec2(-1, -1);
     }
-    if (aux.x != -1 && data->mouseState == GLUT_DOWN) {
-      if (data->mouseButton == GLUT_LEFT_BUTTON) {
+    if (aux.x != -1 && UIdata.GetMouseState() == GLUT_DOWN) {
+      if (UIdata.GetMouseButton() == GLUT_LEFT_BUTTON) {
         RotateCamera(0.5f * (diff.y), 0.5f * (diff.x));
         return true;
       }
-      if (data->mouseButton == GLUT_RIGHT_BUTTON) {
+      if (UIdata.GetMouseButton() == GLUT_RIGHT_BUTTON) {
         ZoomCamera(0.01f * (diff.y));
         return true;
       }

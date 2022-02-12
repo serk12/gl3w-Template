@@ -5,7 +5,7 @@
 
 class Scene : public GameObject {
 public:
-  bool Event(char event_, const void *data_);
+  bool Event(char event_) override;
   void Draw() const override final;
 
 protected:

@@ -14,7 +14,7 @@ function first_build() {
   mkdir -p build
   cd build
   cmake ..
-  make || exit
+  make -j 8 || exit
 }
 
 

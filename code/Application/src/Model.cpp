@@ -2,6 +2,8 @@
 #include "../headers/ShaderProgram.h"
 #include <fstream>
 
+Model::Model() : mGLObjsInit(false) {}
+
 bool Model::Load(const std::string &filename_) {
   std::ifstream fin;
   char line[100];
