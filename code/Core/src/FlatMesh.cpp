@@ -44,8 +44,9 @@ bool FlatMesh::Load(const std::string &filename_) {
   if (resultSize != size) {
     return false;
   }
-  mWidth = 1024;
-  mHeight = resultSize / 1024;
+  int aux = resultSize / 1024;
+  mWidth = aux < 1024 ? aux : 1024;
+  mHeight = aux > 1024 ? aux : 1024;
   return true;
 }
 
@@ -53,17 +54,18 @@ void FlatMesh::SendToOpenGL(const std::shared_ptr<ShaderProgram> program_) {
   // calculate point, normal triangles and color
   for (size_t i = 0; i < mHeightMap.size(); ++i) {
     auto xy = IndexToMatrix(i);
-    mPoints.push_back(glm::vec3(xy.first, mHeightMap[i], xy.second));
-    if (xy.second > 0 && xy.first > 0) {
-      if (xy.first % 2 == 0) {
-        mTriangles.push_back(i);
-        mTriangles.push_back(i + mHeight);
-        mTriangles.push_back(i + 1);
-      } else {
-        mTriangles.push_back(i);
-        mTriangles.push_back(i - 1 + mHeight);
-        mTriangles.push_back(i + mHeight);
-      }
+    auto x = xy.first;
+    auto y = xy.second;
+    mPoints.push_back(glm::vec3(x, mHeightMap[i], y));
+    if (y + 1 < mWidth && x + 1 < mHeight) {
+      mTriangles.push_back(i);
+      mTriangles.push_back(MatrixToIndex(x + 1, y));
+      mTriangles.push_back(MatrixToIndex(x, y + 1));
+    }
+    if (x > 0 && y > 0) {
+      mTriangles.push_back(MatrixToIndex(x - 1, y));
+      mTriangles.push_back(MatrixToIndex(x, y - 1));
+      mTriangles.push_back(i);
     }
     mNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
     mColors.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));

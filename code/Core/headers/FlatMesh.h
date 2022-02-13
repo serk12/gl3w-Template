@@ -18,13 +18,13 @@ public:
 
 private:
   std::pair<size_t, size_t> IndexToMatrix(size_t i_) const {
-    size_t x = i_ / mHeight;
-    size_t y = i_ % mHeight;
+    size_t x = i_ % mWidth;
+    size_t y = i_ / mWidth;
     return std::make_pair(x, y);
   }
-  size_t MatrixToIndex(size_t x_, size_t y_) const { return x_ * mHeight + y_; }
+  size_t MatrixToIndex(size_t x_, size_t y_) const { return y_ * mWidth + x_; }
 
-  size_t mHeight, mWidth;
+  size_t mHeight, mWidth; // x, y
   std::vector<float> mHeightMap;
 };
 
