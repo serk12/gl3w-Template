@@ -10,3 +10,6 @@
 [submodule "libs/libzip"]
 	path = libs/libzip
 	url = https://github.com/nih-at/libzip
+[submodule "libs/libdxfrw"]
+	path = libs/libdxfrw
+	url = https://github.com/LibreCAD/libdxfrw

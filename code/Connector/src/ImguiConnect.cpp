@@ -19,7 +19,6 @@ ImguiConnect::ImguiConnect(ApplicationInterface *application, int argc,
   glutInit(&argc, argv);
   glutInitContextVersion(3, 3);
   glutInitContextProfile(GLUT_CORE_PROFILE);
-
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowPosition(100, 100);
   glutInitWindowSize(640, 480);

@@ -12,6 +12,8 @@ void Camera::Init(float initDistance_, float initAngleX_, float initAngleY_) {
   mDistance = initDistance_;
   mAngleX = initAngleX_;
   mAngleY = initAngleY_;
+  mPos = glm::vec3(0.0f, 0.0f, 0.0f);
+  mVel = glm::vec3(0.0f);
   mRangeDistanceCamera[0] = initDistance_ < 0.1f ? initDistance_ : 0.1f;
   mRangeDistanceCamera[1] = initDistance_ > 3.0f ? initDistance_ : 3.0f;
   ComputeModelViewMatrix();
@@ -36,25 +38,62 @@ void Camera::ZoomCamera(float distDelta_) {
   ComputeModelViewMatrix();
 }
 
+void Camera::MoveCamera(glm::vec3 move_) {
+  glm::mat4 auxDisp = glm::mat4(1.0f);
+  auxDisp =
+      glm::rotate(auxDisp, mAngleY / 180.f * PI, glm::vec3(0.0f, -1.0f, 0.0f));
+  glm::vec4 aux = auxDisp * glm::vec4(move_, 1.0f);
+  mPos += glm::vec3(aux / aux[3]);
+  ComputeModelViewMatrix();
+}
+
+bool Camera::Update(int dt_) {
+  MoveCamera(mVel * float(dt_));
+  return true;
+}
+
 void Camera::ComputeModelViewMatrix() {
   mModelView = glm::mat4(1.0f);
-  mModelView = glm::translate(mModelView, glm::vec3(0.0f, 0.0f, -mDistance));
   mModelView = glm::rotate(mModelView, mAngleX / 180.f * PI,
                            glm::vec3(1.0f, 0.0f, 0.0f));
   mModelView = glm::rotate(mModelView, mAngleY / 180.f * PI,
                            glm::vec3(0.0f, 1.0f, 0.0f));
+  mModelView =
+      glm::translate(mModelView, mPos + glm::vec3(0.0f, 0.0f, -mDistance));
 }
 
 bool Camera::Event(char event_) {
   auto UIdata = Context::GetUIData();
   switch (event_) {
+  case UIEvent::Key: {
+    switch (UIdata.GetKey()) {
+    case 'a':
+      mVel.x += UIdata.GetKeyPressed() ? 0.001 : -0.001f;
+      return true;
+    case 's':
+      mVel.z += UIdata.GetKeyPressed() ? -0.001 : 0.001f;
+      return true;
+    case 'd':
+      mVel.x += UIdata.GetKeyPressed() ? -0.001 : 0.001f;
+      return true;
+    case 'w':
+      mVel.z += UIdata.GetKeyPressed() ? 0.001 : -0.001f;
+      return true;
+    case ' ':
+      mVel.y += UIdata.GetKeyPressed() ? -0.001 : 0.001f;
+      return true;
+    case 'z':
+      mVel.y += UIdata.GetKeyPressed() ? 0.001 : -0.001f;
+      return true;
+    }
+    break;
+  }
   case UIEvent::Resize: {
     ResizeCameraViewport(UIdata.GetWidth(), UIdata.GetHeight());
     break;
   }
   case UIEvent::MouseMove:
   case UIEvent::MouseClick: {
-
     glm::ivec2 aux = mLastMouse;
     glm::ivec2 diff =
         glm::ivec2(UIdata.GetMouseX() - aux.x, UIdata.GetMouseY() - aux.y);

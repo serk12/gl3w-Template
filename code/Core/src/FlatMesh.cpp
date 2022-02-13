@@ -7,14 +7,14 @@ namespace ZipUtils {
 
 FlatMesh::FlatMesh() : Model(), mHeight(0), mWidth(0) {}
 
-// void FlatMesh::Draw() const {
-//   glBindVertexArray(mVao);
-//   glEnableVertexAttribArray(mPosLocation);
-//   glEnableVertexAttribArray(mNormalLocation);
-//   glEnableVertexAttribArray(mColorLocation);
-//   glDrawArrays(GL_POINTS, 0, mPoints.size());
-//   glBindVertexArray(0);
-// }
+void FlatMesh::Draw() const {
+  glBindVertexArray(mVao);
+  glEnableVertexAttribArray(mPosLocation);
+  glEnableVertexAttribArray(mNormalLocation);
+  glEnableVertexAttribArray(mColorLocation);
+  glDrawArrays(GL_POINTS, 0, mPoints.size());
+  glBindVertexArray(0);
+}
 
 bool FlatMesh::Load(const std::string &filename_) {
   const std::string HEIGHT_MAP = "LAYER_0.raw";
@@ -53,22 +53,27 @@ bool FlatMesh::Load(const std::string &filename_) {
 void FlatMesh::SendToOpenGL(const std::shared_ptr<ShaderProgram> program_) {
   // calculate point, normal triangles and color
   for (size_t i = 0; i < mHeightMap.size(); ++i) {
-    auto xy = IndexToMatrix(i);
-    auto x = xy.first;
-    auto y = xy.second;
-    mPoints.push_back(glm::vec3(x, mHeightMap[i], y));
-    if (y + 1 < mWidth && x + 1 < mHeight) {
-      mTriangles.push_back(i);
-      mTriangles.push_back(MatrixToIndex(x + 1, y));
-      mTriangles.push_back(MatrixToIndex(x, y + 1));
-    }
-    if (x > 0 && y > 0) {
-      mTriangles.push_back(MatrixToIndex(x - 1, y));
-      mTriangles.push_back(MatrixToIndex(x, y - 1));
-      mTriangles.push_back(i);
-    }
+    std::pair<size_t, size_t> xy = IndexToMatrix(i);
+    size_t x = xy.first;
+    size_t y = xy.second;
+    mPoints.push_back(glm::vec3(x * 0.01f, mHeightMap[i] * 0.2f, y * 0.01f));
     mNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-    mColors.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    mColors.push_back(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   }
+
+  // for (size_t i = 0; i < mWidth; ++i) {
+  //   for (size_t j = 0; j < mHeight; ++j) {
+  //     if (i + 1 < mWidth && j + 1 < mWidth) {
+  //       mTriangles.push_back(MatrixToIndex(i, j));
+  //       mTriangles.push_back(MatrixToIndex(i + 1, j));
+  //       mTriangles.push_back(MatrixToIndex(i, j + 1));
+  //     }
+  //     if (i > 0 && j > 0) {
+  //       mTriangles.push_back(MatrixToIndex(i, j));
+  //       mTriangles.push_back(MatrixToIndex(i - 1, j));
+  //       mTriangles.push_back(MatrixToIndex(i, j - 1));
+  //     }
+  //   }
+  // }
   Model::SendToOpenGL(program_);
 }

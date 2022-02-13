@@ -14,7 +14,7 @@ public:
 
   bool Load(const std::string &filename_) override;
   void SendToOpenGL(const std::shared_ptr<ShaderProgram> program_) override;
-  // void Draw() const override;
+  void Draw() const override;
 
 private:
   std::pair<size_t, size_t> IndexToMatrix(size_t i_) const {
@@ -24,7 +24,7 @@ private:
   }
   size_t MatrixToIndex(size_t x_, size_t y_) const { return y_ * mWidth + x_; }
 
-  size_t mHeight, mWidth; // x, y
+  size_t mHeight, mWidth; // y, x
   std::vector<float> mHeightMap;
 };
 
