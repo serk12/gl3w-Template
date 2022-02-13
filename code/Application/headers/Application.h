@@ -27,7 +27,6 @@ protected:
   std::shared_ptr<Scene> mScene;
   std::vector<std::shared_ptr<Model>> mObjects;
   std::vector<std::shared_ptr<ShaderProgram>> mShaders;
-  std::queue<char> mEvents;
 };
 
 #endif

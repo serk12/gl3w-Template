@@ -10,7 +10,7 @@ Application::Application() { mCamera = std::shared_ptr<Camera>(new Camera()); }
 bool Application::Event(char event_) {
   switch (event_) {
   case UIEvent::Key:
-    if (Context::GetActualContext().GetUIData().GetKey() == 27) { // esc
+    if (Context::GetUIData().GetKey() == 27) { // esc
       mExit = true;
       return true;
     }

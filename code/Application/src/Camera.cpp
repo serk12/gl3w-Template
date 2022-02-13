@@ -46,7 +46,7 @@ void Camera::ComputeModelViewMatrix() {
 }
 
 bool Camera::Event(char event_) {
-  auto UIdata = Context::GetActualContext().GetUIData();
+  auto UIdata = Context::GetUIData();
   switch (event_) {
   case UIEvent::Resize: {
     ResizeCameraViewport(UIdata.GetWidth(), UIdata.GetHeight());

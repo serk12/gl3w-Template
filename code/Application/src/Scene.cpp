@@ -20,7 +20,7 @@ void Scene::Draw() const {
 }
 
 bool Scene::Event(char event_) {
-  auto &UIdata = Context::GetActualContext().GetUIData();
+  auto &UIdata = Context::GetUIData();
   switch (event_) {
   case UIEvent::Key:
     if (UIdata.GetKeyPressed()) {

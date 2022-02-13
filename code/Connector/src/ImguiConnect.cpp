@@ -74,7 +74,7 @@ ImguiConnect::ImguiConnect(ApplicationInterface *application, int argc,
 }
 
 void ImguiConnect::KeyPressed(unsigned char key, int x, int y) {
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.key = key;
   uiContext.mouseX = x;
   uiContext.mouseY = y;
@@ -83,7 +83,7 @@ void ImguiConnect::KeyPressed(unsigned char key, int x, int y) {
 }
 
 void ImguiConnect::KeyReleased(unsigned char key, int x, int y) {
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.key = key;
   uiContext.mouseX = x;
   uiContext.mouseY = y;
@@ -92,7 +92,7 @@ void ImguiConnect::KeyReleased(unsigned char key, int x, int y) {
 }
 
 void ImguiConnect::SpecialKeyPressed(int key, int x, int y) {
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.specialKey = key;
   uiContext.mouseX = x;
   uiContext.mouseY = y;
@@ -101,7 +101,7 @@ void ImguiConnect::SpecialKeyPressed(int key, int x, int y) {
 }
 
 void ImguiConnect::SpecialKeyReleased(int key, int x, int y) {
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.specialKey = key;
   uiContext.mouseX = x;
   uiContext.mouseY = y;
@@ -110,14 +110,14 @@ void ImguiConnect::SpecialKeyReleased(int key, int x, int y) {
 }
 
 void ImguiConnect::MouseMove(int x, int y) {
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.mouseX = x;
   uiContext.mouseY = y;
   mApplication->Event(UIEvent::MouseMove);
 }
 
 void ImguiConnect::MouseCallBack(int button, int state, int x, int y) {
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.mouseButton = button;
   uiContext.mouseState = state;
   uiContext.mouseX = x;
@@ -128,7 +128,7 @@ void ImguiConnect::MouseCallBack(int button, int state, int x, int y) {
 void ImguiConnect::ResizeCallback(int width, int height) {
   ImGui_ImplGLUT_ReshapeFunc(width, height);
   glViewport(0, 0, width, height);
-  auto &uiContext = Context::GetActualContext().GetUIData();
+  auto &uiContext = Context::GetUIData();
   uiContext.width = width;
   uiContext.height = height;
   mApplication->Event(UIEvent::Resize);
@@ -142,9 +142,8 @@ void ImguiConnect::DrawCallback() {
 }
 
 void ImguiConnect::IdleCallback() {
-  auto &context = Context::GetActualContext();
-  while (!context.EventsEmpty()) {
-    char event = context.PopEvent();
+  while (!Context::EventsEmpty()) {
+    char event = Context::PopEvent();
     mApplication->Event(event);
   }
 
