@@ -78,9 +78,10 @@ case $COMMAND in
   if [ $FORCE == True ]; then
     cmake -DCMAKE_BUILD_TYPE=${PROFILE} ..
   fi
-  make || exit
+  make -j 8 || exit
   ;;
   "doxygen")
+  mkdir -p build/doc
   doxygen Doxyfile
   ;;
 esac

@@ -42,8 +42,6 @@ protected:
   std::vector<glm::vec3> mPoints, mNormals;
   std::vector<unsigned int> mTriangles;
   std::vector<glm::vec4> mColors;
-
-private:
   bool mGLObjsInit;
   GLuint mVao, mEbo;
   GLuint mVboPosition, mVboNormal, mVboColor;

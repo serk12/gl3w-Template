@@ -14,7 +14,7 @@ bool Hanbei::Load(int argc_, char **argv_) {
         std::make_pair(ShaderGenerator::ShaderType::FRAGMENT_SHADER,
                        "../Shaders/default.frag")}});
   auto pc = std::shared_ptr<FlatMesh>(new FlatMesh());
-  pc->Load("../models/bunny.ply");
+  pc->Load("../models/private_bumps.plux");
   pc->SendToOpenGL(*mShaders.begin());
   mObjects.push_back(pc);
   return true;
