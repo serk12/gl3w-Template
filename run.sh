@@ -9,7 +9,7 @@ function install() {
 }
 
 function first_build() {
-  git submodule update --init --recursive
+  git submodule update --init --recursive || exit
   cd libs/gl3w/
   mkdir -p build
   cd build
@@ -62,7 +62,10 @@ case $COMMAND in
   if [ $INSTALL == True ]; then
     install
   fi
+  echo "start first build"
   first_build
+  echo "building"
+  FORCE=True
   ;;
   "clean")
   cd build

@@ -3,9 +3,9 @@
 
 #include "../../Application/headers/Application.h"
 
-class Hanbei : public Application {
+class App : public Application {
 public:
-  Hanbei();
+  App();
   bool Load(int argc_, char **argv_) override;
 };
 

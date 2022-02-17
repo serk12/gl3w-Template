@@ -1,10 +1,9 @@
-#include "../headers/HanbeiGui.h"
+#include "../headers/AppGui.h"
 #include <imgui.h>
-#include <iostream>
 
-HanbeiGui::HanbeiGui() {}
+AppGui::AppGui() {}
 
-void HanbeiGui::DrawGui() const {
+void AppGui::DrawGui() const {
   ImGui::Begin("Options", 0, ImGuiWindowFlags_AlwaysAutoResize);
   ImGui::Text("Render");
   ImGui::SliderInt("Point size", &mValue, 1, 7);

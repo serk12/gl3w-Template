@@ -1,20 +1,20 @@
-#include "../headers/Hanbei.h"
+#include "../headers/App.h"
 
 #include "../../Application/headers/ShaderGenerator.h"
-#include "../headers/FlatMesh.h"
-#include "../headers/HanbeiGui.h"
+#include "../headers/AppGui.h"
+#include "../headers/Mesh.h"
 
-Hanbei::Hanbei() : Application() {}
+App::App() : Application() {}
 
-bool Hanbei::Load(int argc_, char **argv_) {
-  mScene = std::shared_ptr<Scene>(new HanbeiGui());
+bool App::Load(int argc_, char **argv_) {
+  mScene = std::shared_ptr<Scene>(new AppGui());
   mShaders = ShaderGenerator::InitShaderList(
       {{std::make_pair(ShaderGenerator::ShaderType::VERTEX_SHADER,
                        "../Shaders/default.vert"),
         std::make_pair(ShaderGenerator::ShaderType::FRAGMENT_SHADER,
                        "../Shaders/default.frag")}});
-  auto pc = std::shared_ptr<FlatMesh>(new FlatMesh());
-  pc->Load("../models/private_bumps.plux");
+  auto pc = std::shared_ptr<Mesh>(new Mesh());
+  pc->Load("../models/bunny.ply");
   pc->SendToOpenGL(*mShaders.begin());
   mObjects.push_back(pc);
   return true;

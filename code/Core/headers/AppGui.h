@@ -3,9 +3,9 @@
 
 #include "../../Application/headers/Scene.h"
 
-class HanbeiGui : public Scene {
+class AppGui : public Scene {
 public:
-  HanbeiGui();
+  AppGui();
   void DrawGui() const override;
 
 private:

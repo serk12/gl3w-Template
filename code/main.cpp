@@ -1,8 +1,8 @@
 #include "./Connector/headers/ImguiConnect.h"
-#include "./Core/headers/Hanbei.h"
+#include "./Core/headers/App.h"
 
 int main(int argc, char **argv) {
-  Hanbei *application = new Hanbei();
+  App *application = new App();
   ImguiConnect(application, argc, argv);
   delete application;
   return 0;

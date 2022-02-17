@@ -9,6 +9,3 @@ add_library(gl3w ${gl3w_files})
 set(LIBZIP_DO_INSTALL OFF)
 set(BUILD_SHARED_LIBS OFF)
 set(LIBZIP_DO_INSTALL OFF)
-add_subdirectory(libzip zip)
-
-add_subdirectory(libdxfrw dxfrw)
